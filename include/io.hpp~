@@ -1,0 +1,33 @@
+#ifndef IO_HPP
+#define IO_HPP
+
+#include <stdint.h>
+#include <ArduinoModbus.h>
+#include <Arduino.h>
+
+namespace io {
+
+struct registers_s {
+    enum address {
+        a_pump_enable = 0x00,
+        a_armed = 0x01,
+        a_bitrate = 0x00,
+        a_id = 0x01,
+    };
+
+    static constexpr size_t n_coils = 2;
+    static constexpr size_t n_holdr = 2;
+    
+    bool pump_enable = false;
+    bool armed = false;
+    uint32_t bitrate = 9600;
+    uint8_t id = 1;
+};  
+
+void setup();
+void loop();
+const registers_s &registers();
+
+}
+
+#endif

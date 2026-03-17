@@ -1,0 +1,20 @@
+#include <Arduino.h>
+#include "io.hpp"
+#include "param.hpp"
+
+void setup() {
+    io::setup();
+    param::setup();
+
+    pinMode(LED_BUILTIN, OUTPUT);
+    digitalWrite(LED_BUILTIN, LOW);
+}
+void loop() {
+    io::loop();
+    const auto &regs = io::registers();
+    if (regs.pump_enable) {
+        digitalWrite(LED_BUILTIN, HIGH);
+    } else {
+        digitalWrite(LED_BUILTIN, LOW);
+    }        
+}

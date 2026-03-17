@@ -1,0 +1,44 @@
+#include "io.hpp"
+
+static io::registers_s _regs;
+
+namespace io {
+
+void setup() {
+    Serial.begin(_regs.bitrate);
+    Serial.println("[IO] Setting up server");
+
+    auto& server = ModbusRTUServer;
+    if (!server.begin(_regs.id, _regs.bitrate)) {
+        Serial.println("[IO] Server OK");
+    } else {
+        Serial.println("[IO] Server ERROR");
+    }
+    
+    server.configureCoils(
+        registers_s::a_pump_enable, registers_s::n_coils);
+    server.configureHoldingRegisters(
+        registers_s::a_bitrate, registers_s::n_holdr);
+}
+
+void loop() {
+    auto& server = ModbusRTUServer;
+    if (!server.poll()) {
+        return;
+    }
+    
+    _regs.armed =
+        server.coilRead(registers_s::a_armed);
+    _regs.pump_enable =
+        server.coilRead(registers_s::a_pump_enable);
+    _regs.id =
+        server.holdingRegisterRead(registers_s::a_id);
+    _regs.bitrate =
+        server.holdingRegisterRead(registers_s::a_bitrate);
+}
+
+const registers_s &registers() {
+    return _regs;
+}    
+
+}
