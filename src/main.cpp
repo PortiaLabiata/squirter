@@ -4,7 +4,6 @@
 void setup() {
     io::setup();
     Serial.println("[main] Starting sketch");
-    Serial.flush();
 
     pinMode(LED_BUILTIN, OUTPUT);
     digitalWrite(LED_BUILTIN, LOW);
@@ -12,7 +11,7 @@ void setup() {
 void loop() {
     io::loop();
     const auto &regs = io::regs();
-    if (regs.pump_on) {
+    if (regs.armed && regs.pump_on) {
         digitalWrite(LED_BUILTIN, HIGH);
     } else {
         digitalWrite(LED_BUILTIN, LOW);

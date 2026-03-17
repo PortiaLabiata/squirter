@@ -29,7 +29,7 @@ void setup() {
     
     EEPROM.get(0, magic);
     if (magic != 0xDEAD) {
-        Serial.println("[IO] EEPROM written first fime");
+        Serial.println("[IO] EEPROM written first time");
         first_time = true;
         magic = 0xDEAD;
         EEPROM.put(0, magic);
