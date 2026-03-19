@@ -26,6 +26,27 @@ class MBShell(cmd.Cmd):
     def do_setid(self, arg):
         self.devid = int(arg)
 
+    def do_wreg(self, arg):
+        args = arg.split()
+        reg, val = int(args[0], 16), int(args[1])
+        if not self._check_client():
+            return False
+        self.client.write_register(reg, val, device_id=self.devid)
+
+    def do_rreg(self, arg):
+        reg = int(arg, 16)
+        if not self._check_client():
+            return False
+        print(
+            self.client.read_holding_registers(reg, device_id=self.devid))
+
+    def do_rcoil(self, arg):
+        reg = int(arg, 16)
+        if not self._check_client():
+            return False
+        print(
+            self.client.read_coils(reg, device_id=self.devid))
+
     def _check_client(self):
         if self.client is None:
             print('Error: not connected')
@@ -52,6 +73,11 @@ class MBShell(cmd.Cmd):
         if not self._check_client():
             return False
         self.client.write_coil(1, False, device_id=self.devid)
+
+    def do_reboot(self, arg):
+        if not self._check_client():
+            return False
+        self.client.write_coil(2, True, device_id=self.devid)
 
     def preloop(self):
         self.client = None
