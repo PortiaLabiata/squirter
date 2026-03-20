@@ -103,6 +103,8 @@ public:
         _mb_propagate();
     }
 
+    T operator=(T v) { set(v); return v; }
+
     operator T() const { return _value; }
     size_t size() const override { return sizeof(T); }
 };
@@ -135,7 +137,7 @@ struct registers_s {
 
 void setup();
 void loop();
-const registers_s& regs();
+registers_s& regs();
 
 }
 

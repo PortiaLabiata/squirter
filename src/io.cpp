@@ -60,6 +60,6 @@ void loop() {
     _regs.accel.set(server.holdingRegisterRead(registers_s::accel_idx));
 }
 
-const registers_s& regs() { return _regs; }
+registers_s& regs() { return _regs; }
 
 }
